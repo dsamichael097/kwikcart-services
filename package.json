@@ -1,0 +1,25 @@
+{
+  "name": "kwikcart",
+  "version": "1.0.0",
+  "description": "This is QR Based Online Shopping System where the customer can scan the QR Code to add items to cart, and also authenticate themselves",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Runtime Error",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "fawn": "^2.1.5",
+    "firebase-admin": "^8.10.0",
+    "firebase-tools": "^7.15.0",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.9.15",
+    "qrcode": "^1.4.4",
+    "request": "^2.88.2",
+    "socket.io": "^2.3.0"
+  }
+}
