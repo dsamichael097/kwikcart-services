@@ -1,21 +1,26 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const Fawn = require('fawn');
-const userRoutes = require('./routes/cartRoutes');
+const express = require("express");
+const mongoose = require("mongoose");
+const Fawn = require("fawn");
+const userRoutes = require("./routes/cartRoutes");
+const Joi = require("@hapi/joi");
+Joi.objectId = require("joi-objectid")(Joi);
 //const productRoutes = require('./routes/productRoutes')
 //const orderRoutes = require('./routes/orderRoutes')
-require('express-async-errors');
-const cors = require('cors');
+const cors = require("cors");
 const app = express();
+require("express-async-errors");
 
 app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection Initialization
-mongoose.connect("mongodb://localhost:27017/kwikcart",{useNewUrlParser: true, useUnifiedTopology: true})
-.then(() => console.log("Connected to MongoDB"))
-.catch((err) => console.log("Some error occured"));
-
+mongoose
+  .connect("mongodb://localhost:27017/kwikcart", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log("Some error occured"));
 
 // //Code to remove records after certain time, i.e 1.5 hrs
 // function removeInactiveSessions(){
@@ -35,16 +40,16 @@ mongoose.connect("mongodb://localhost:27017/kwikcart",{useNewUrlParser: true, us
 
 Fawn.init(mongoose);
 //Common Route for All Users
-app.use("/api/cart",userRoutes);
+app.use("/api/cart", userRoutes);
 //app.use("/api/product",productRoutes);
 //app.use("/api/order",orderRoutes);
 
 app.use((err, req, res, next) => {
-  console.error("ERROR : ",err);
+  console.error("ERROR : ", err);
   res.status(500).send("Some Error Occured");
   //next(err);
 });
 
-app.listen(process.env.PORT || 4500,()=>{
-    console.log('Server staretd on port 4500');
+app.listen(process.env.PORT || 4500, () => {
+  console.log("Server staretd on port 4500");
 });
