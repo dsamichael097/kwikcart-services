@@ -22,14 +22,6 @@ function validateCartSchema(product) {
   return schema.validate(product);
 }
 
-function validateObjectId(object, name) {
-  const schema = Joi.object({
-    objectId: Joi.objectId().required().label(name),
-  });
-  return schema.validate(object);
-}
-
 exports.Cart = Cart;
 exports.cartSchema = cartSchema;
 exports.validateCartSchema = validateCartSchema;
-exports.validateObjectId = validateObjectId;
