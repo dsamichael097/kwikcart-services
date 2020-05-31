@@ -1,7 +1,7 @@
 const _ = require("lodash");
 const express = require("express");
 const router = express.Router();
-const validateSession = require("../middlewares/validateSession");
+const validateSessionId = require("../middlewares/validateSessionId");
 const validateObjectId = require("../middlewares/validateObjectId");
 const { Session } = require("../models/session");
 const { Product } = require("../models/product");
@@ -13,14 +13,14 @@ router.get("/", async (req, res) => {
   res.status(200).send(_.pick(session, ["_id"]));
 });
 
-router.get("/:sessionId", validateSession, async (req, res) => {
+router.get("/:sessionId", validateSessionId, async (req, res) => {
   const session = await Session.findById(req.params.sessionId);
   if (!session) return res.status(404).send("Session does not exist");
 
   return res.status(200).send(session.cart);
 });
 
-router.post("/:sessionId", validateSession, async (req, res) => {
+router.post("/:sessionId", validateSessionId, async (req, res) => {
   //Check req.body with @hapi/joi over here.
   const validProductId = validateObjectId(req.body.productId);
   if (!validProductId) return res.status(400).send("Invalid Product ID");
@@ -59,7 +59,7 @@ router.post("/:sessionId", validateSession, async (req, res) => {
   res.status(200).send(session);
 });
 
-router.put("/:sessionId", validateSession, async (req, res) => {
+router.put("/:sessionId", validateSessionId, async (req, res) => {
   //Check req.body with @hapi/joi over here.
   const { error } = validateCartSchema(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -94,7 +94,7 @@ router.put("/:sessionId", validateSession, async (req, res) => {
   res.status(200).send(session);
 });
 
-router.delete("/:sessionId", validateSession, async (req, res) => {
+router.delete("/:sessionId", validateSessionId, async (req, res) => {
   //Check req.body with @hapi/joi over here
   const { error } = validateCartSchema(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -112,11 +112,12 @@ router.delete("/:sessionId", validateSession, async (req, res) => {
 
   if (index === -1) return res.status(400).send("Invalid Product ID");
 
+  const qty = session.cart[index].qty;
   session.cart.splice(index, 1);
 
   await session.save();
   await Product.findByIdAndUpdate(req.body.productId, {
-    $inc: { numberInStock: req.body.qty },
+    $inc: { numberInStock: qty },
   });
 
   return res.status(200).send(session);

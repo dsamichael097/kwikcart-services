@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const { Product, validateProduct } = require("../models/product");
-const validateProduct = require("../middlewares/validateProduct");
+const validateProductId = require("../middlewares/validateProductId");
 
 router.get("", async (req, res) => {
   const products = await Product.find();
   return res.status(200).send(products);
 });
 
-router.get("/:productId", validateProduct, async (req, res) => {
+router.get("/:productId", validateProductId, async (req, res) => {
   const product = await Product.findById(req.params.productId);
   if (!product) return res.status(404).send("Product does not exist");
 
@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
   res.status(200).send(product);
 });
 
-router.put("/:productId", validateProduct, async (req, res) => {
+router.put("/:productId", validateProductId, async (req, res) => {
   const { error } = validateProduct(req.body);
   if (error) return res.status(400).send("Invalid Product Details");
 
@@ -37,7 +37,7 @@ router.put("/:productId", validateProduct, async (req, res) => {
   return res.status(200).send(product);
 });
 
-router.delete("/:productId", validateProduct, async (req, res) => {
+router.delete("/:productId", validateProductId, async (req, res) => {
   const product = await Product.findByIdAndDelete(req.params.productId);
   if (!product) return res.status(404).send("Product does not exist");
 

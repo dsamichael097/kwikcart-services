@@ -1,0 +1,4 @@
+{
+  "jwtPrivateKey": "kwikcart_jwtPrivateKey",
+  "smsApiKey": "kwikcart_smsApiKey"
+}

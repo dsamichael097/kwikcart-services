@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const cart = require("../routes/cart");
 const products = require("../routes/products");
-// const rentals = require("../routes/rentals");
+const orders = require("../routes/orders");
+const otp = require("../routes/otp");
 // const returns = require("../routes/returns");
 // const customers = require("../routes/customers");
 // const auth = require("../routes/auth");
@@ -15,15 +16,15 @@ module.exports = function (app) {
 
   app.use("/api/cart", cart);
   app.use("/api/products", products);
-  // app.use("/api/customers", customers);
-  // app.use("/api/rentals", rentals);
+  app.use("/api/orders", orders);
+  app.use("/api/otp", otp);
   // app.use("/api/returns", returns);
   // app.use("/api/users", users);
   // app.use("/api/auth", auth);
 
   // We use this middleware which is called the express error middleware to
   // log and handle internal server errors, whenever a client sends a request
-  // Ans send him an error response. The parameter 'error' is a function reference
+  // And send him an error response. The parameter 'error' is a function reference
   // defined in middlewares/error.js
   app.use(error);
 };
